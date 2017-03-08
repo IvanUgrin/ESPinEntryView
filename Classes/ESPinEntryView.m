@@ -37,6 +37,7 @@
     UIButton *_deleteButton;
 }
 @property (nonatomic, readonly, getter=isIncorrectAnimationBusy) BOOL incorrectAnimationBusy;
+@property (weak, nonatomic) IBOutlet UIButton *btnDelete;
 @end
 @implementation ESPinEntryView
 @synthesize backgroundView=_backgroundView,code=_code,showCancelButton=_showCancelButton,cancelText=_cancelText,deleteText=_deleteText,showAlphabet=_showAlphabet,numberOfDigits=_numberOfDigits,incorrectAnimationBusy=_incorrectAnimationBusy,attempts=_attempts,backgroundBlurRadius=_backgroundBlurRadius;
@@ -79,7 +80,7 @@
 {
     [self setVibrate:YES];
     _code = [@"" copy];
-    [self setOpaque:YES];
+    /*[self setOpaque:YES];
     _backgroundColor = [UIColor colorWithWhite:0 alpha:.7];
     _alphabetLabels = [[NSMutableArray alloc] init];
     _dotViews = [[NSMutableArray alloc] init];
@@ -99,11 +100,11 @@
     [_backgroundContainerView addSubview:_backgroundBlurView];
     [_backgroundBlurView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_backgroundContainerView);
-    }];
+    }];*/
     
     [super setBackgroundColor:[UIColor whiteColor]];
     
-    _canvas = [[_ESPinEntryViewCanvas alloc] initWithPinEntryView:self];
+    /*_canvas = [[_ESPinEntryViewCanvas alloc] initWithPinEntryView:self];
     [self addSubview:_canvas];
     [_canvas mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
@@ -116,7 +117,7 @@
         make.width.equalTo(@(containerWidth));
         make.height.equalTo(@(containerHeight));
         make.center.equalTo(self);
-    }];
+    }];*/
     
     _enterPasscodeLabel = [[UILabel alloc] init];
     [_enterPasscodeLabel setTextAlignment:NSTextAlignmentCenter];
@@ -126,7 +127,7 @@
         make.height.equalTo(@(25));
         make.left.equalTo(_containerView.mas_left);
         make.right.equalTo(_containerView.mas_right);
-        make.top.equalTo(_containerView.mas_top);
+        make.top.equalTo(@([_containerView.mas_top integerValue] + 75));
     }];
     
     UIView *pinEntryContainer = [[UIView alloc] init];
@@ -142,6 +143,8 @@
     [_dotsContainer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_containerView);
     }];
+    
+    /*
     CGFloat wh = circleDiameter - (circleBorder * 2);
     for (NSInteger i = 0; i < 10; i++) {
         CGPoint origin = _positionForEntry(i);
@@ -229,7 +232,7 @@
         make.bottom.equalTo(pinEntryContainer.mas_bottom);
     }];
     [_deleteButton setHidden:YES];
-    
+    */
     /**
      *	@author Bas van Kuijck <bas@e-sites.nl>
      *
@@ -239,7 +242,7 @@
      *	@since 1.0.1
      */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didChangeOrientation:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+    /*
     // Default values
     [self setCancelText:@"Cancel"];
     [self setDeleteText:@"Delete"];
@@ -248,6 +251,7 @@
     [_deleteButton setTitle:self.cancelText forState:UIControlStateNormal];
     [self setBackgroundView:[[UIView alloc] init]];
     [self.backgroundView setBackgroundColor:[UIColor grayColor]];
+     */
     [self _createDotViews];
 }
 
@@ -291,7 +295,7 @@
     } completion:nil];
 }
 
-- (void)_up:(UIButton *)sender
+- (IBAction)_up:(UIButton *)sender
 {
     if ([sender isEqual:_deleteButton]) {
         if (_code.length == 0 && self.showCancelButton) {
@@ -320,8 +324,7 @@
         return;
     }
     
-    NSInteger index = [_buttons indexOfObject:sender];
-    NSInteger digit = index + 1;
+    NSInteger digit = [[[sender titleLabel] text] integerValue];
     if (digit == 10) {
         digit = 0;
     }
@@ -570,13 +573,13 @@
 {
     if (_code.length == 0) {
         if (self.showCancelButton) {
-            [_deleteButton setTitle:self.cancelText forState:UIControlStateNormal];
+            //[_deleteButton setTitle:self.cancelText forState:UIControlStateNormal];
         } else {
-            [_deleteButton setHidden:YES];
+            [_btnDelete setHidden:YES];
         }
     } else {
-        [_deleteButton setTitle:self.deleteText forState:UIControlStateNormal];
-        [_deleteButton setHidden:NO];
+        //[_deleteButton setTitle:self.deleteText forState:UIControlStateNormal];
+        [_btnDelete setHidden:NO];
     }
 }
 

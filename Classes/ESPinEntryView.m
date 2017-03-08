@@ -7,9 +7,9 @@
 //
 
 #import "ESPinEntryView.h"
-#import <Masonry.h>
+#import "Masonry.h"
 #import <QuartzCore/QuartzCore.h>
-#import <FXBlurView.h>
+#import "FXBlurView.h"
 #import <AudioToolbox/AudioServices.h>
 
 @interface _ESPinEntryViewCanvas : UIView
@@ -127,7 +127,7 @@
         make.height.equalTo(@(25));
         make.left.equalTo(_containerView.mas_left);
         make.right.equalTo(_containerView.mas_right);
-        make.top.equalTo(@([_containerView.mas_top integerValue] + 75));
+        make.top.equalTo(@(100));
     }];
     
     UIView *pinEntryContainer = [[UIView alloc] init];
